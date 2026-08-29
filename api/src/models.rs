@@ -1,1 +1,3 @@
-pub mod event;
+pub mod click;
+
+pub use click::Click;

@@ -1,6 +1,7 @@
+//Crud routes for dashboard
 use crate::handlers::analytics;
 use axum::{Router, routing::get};
 
 pub fn routes() -> Router {
-    Router::new().route("/{id}", get(analytics::enqueue_click_event))
+    Router::new().route("/", get(analytics::foo))
 }
