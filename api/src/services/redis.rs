@@ -46,7 +46,7 @@ pub async fn connect_redis() -> redis::RedisResult<()> {
     let queue = RedisWorkerQueue::new();
 
     // queue.enqueue_event().await.unwrap();
-    queue.dequeue().await.unwrap();
+    queue.dequeue_event().await.unwrap();
 
     Ok(())
 }
