@@ -1,12 +1,52 @@
-use redis::Commands;
+use core::error;
 
-pub fn connect_redis() -> redis::RedisResult<()> {
-    let client = redis::Client::open("redis://127.0.0.1:6379/")?;
-    let mut con = client.get_connection()?;
+use crate::models::Event;
+use deadpool_redis::{Config, Runtime};
+use redis::AsyncTypedCommands;
 
-    redis::cmd("SET").arg("test_key").arg("42").exec(&mut con)?;
-    let value: String = con.get("test_key")?;
-    println!("{:?}", value);
+pub struct RedisWorkerQueue {
+    pool: deadpool_redis::Pool,
+}
+
+impl RedisWorkerQueue {
+    pub fn new() -> Self {
+        let cfg = Config::from_url("redis://127.0.0.1:6379/");
+        let pool = cfg.create_pool(Some(Runtime::Tokio1)).unwrap();
+        RedisWorkerQueue { pool }
+    }
+
+    //TODO: Check if this method is necessary
+    async fn connect(&self) -> Result<deadpool_redis::Connection, Box<dyn error::Error>> {
+        let conn = self.pool.get().await?;
+        Ok(conn)
+    }
+
+    pub async fn enqueue_event<'a>(
+        &self,
+        stream: &str,
+        event: impl Event,
+    ) -> Result<(), Box<dyn error::Error>> {
+        let mut conn = self.connect().await?;
+        conn.xadd(stream, "*", event.get_metadata());
+
+        Ok(())
+    }
+
+    //FIX: Change this from conn.get_int placeholder to an xread redis command
+    pub async fn dequeue_event(&self) -> Result<(), Box<dyn error::Error>> {
+        let mut conn = self.connect().await?;
+        let value = conn.get_int("test_key").await?;
+        println!("{:?}", value);
+
+        Ok(())
+    }
+}
+
+pub async fn connect_redis() -> redis::RedisResult<()> {
+    let queue = RedisWorkerQueue::new();
+
+    // queue.enqueue_event().await.unwrap();
+    queue.dequeue().await.unwrap();
 
     Ok(())
 }
