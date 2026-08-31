@@ -9,10 +9,11 @@ pub struct RedisWorkerQueue {
 }
 
 impl RedisWorkerQueue {
-    pub fn new() -> Self {
+    pub fn new() -> Result<Self, Box<dyn error::Error>> {
         let cfg = Config::from_url("redis://127.0.0.1:6379/");
-        let pool = cfg.create_pool(Some(Runtime::Tokio1)).unwrap();
-        RedisWorkerQueue { pool }
+        let pool = cfg.create_pool(Some(Runtime::Tokio1))?;
+
+        Ok(RedisWorkerQueue { pool })
     }
 
     //TODO: Check if this method is necessary
@@ -27,7 +28,7 @@ impl RedisWorkerQueue {
         event: impl Event,
     ) -> Result<(), Box<dyn error::Error>> {
         let mut conn = self.connect().await?;
-        conn.xadd(stream, "*", event.get_metadata());
+        conn.xadd(stream, "*", event.get_metadata()).await?;
 
         Ok(())
     }
@@ -43,10 +44,13 @@ impl RedisWorkerQueue {
 }
 
 pub async fn connect_redis() -> redis::RedisResult<()> {
-    let queue = RedisWorkerQueue::new();
+    let queue = RedisWorkerQueue::new().unwrap_or_else(|err| {
+        eprintln!("Error connecting to redis server {}", err);
+        std::process::exit(1)
+    });
 
     // queue.enqueue_event().await.unwrap();
-    queue.dequeue_event().await.unwrap();
+    // queue.dequeue_event().await.unwrap();
 
     Ok(())
 }
