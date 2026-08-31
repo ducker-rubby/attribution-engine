@@ -26,3 +26,16 @@ impl Event for ClickEvent<'_> {
         &self.metadata
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn build_click_event() {
+        let click_event = ClickEvent::build("abcd");
+
+        assert_eq!(click_event.get_id(), "abcd");
+        assert_eq!(click_event.get_metadata(), &[("link_id", "abcd")]);
+    }
+}
