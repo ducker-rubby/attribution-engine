@@ -9,3 +9,4 @@ tokio = {version = "1.0", features = ["full"]}
 redis = "1.6.0"
 deadpool-redis = "0.23.1"
 testcontainers = "0.28.0"
+uuid = { version = "1.26.0", features = ["v7"]}

@@ -1,32 +1,29 @@
+use uuid::Uuid;
+
 use crate::models::Event;
 
 #[derive(Debug)]
 pub struct ClickEvent<'a> {
-    id: &'a str,
-    metadata: Vec<(&'a str, &'a str)>,
-    click_ref: &'a str,
+    link_id: &'a str,
+    click_ref_str: String,
 }
 
 impl<'a> ClickEvent<'a> {
     pub fn build(id: &'a str) -> Self {
-        let click_ref = ClickEvent::new_ref_id();
-        let metadata = vec![("link_id", id), ("click_ref", click_ref)];
-
+        let uuid = Uuid::now_v7();
         Self {
-            id,
-            metadata,
-            click_ref,
+            link_id: id,
+            click_ref_str: uuid.to_string(),
         }
-    }
-
-    fn new_ref_id() -> &'a str {
-        unimplemented!()
     }
 }
 
 impl Event for ClickEvent<'_> {
-    fn get_metadata(&self) -> &[(&str, &str)] {
-        &self.metadata
+    fn get_metadata(&self) -> Vec<(&str, &str)> {
+        vec![
+            ("link_id", self.link_id),
+            ("click_ref", &self.click_ref_str),
+        ]
     }
 }
 
@@ -37,10 +34,19 @@ mod tests {
     #[test]
     fn build_click_event() {
         let click_event = ClickEvent::build("abcd");
+        let metadata = click_event.get_metadata();
+
+        assert_eq!(metadata.len(), 2);
+        assert_eq!(metadata[0], ("link_id", "abcd"));
+        assert_eq!(metadata[1].0, "click_ref");
+
+        let click_ref_str = metadata[1].1;
+        let parsed_uuid = Uuid::parse_str(click_ref_str).expect("Click ref should be a valid UUID");
 
         assert_eq!(
-            click_event.get_metadata(),
-            &[("link_id", "abcd"), ("click_ref", "")]
+            parsed_uuid.get_version_num(),
+            7,
+            "click_ref must be UUID v7"
         );
     }
 }

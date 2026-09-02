@@ -28,7 +28,7 @@ impl RedisWorkerQueue {
         event: impl Event,
     ) -> Result<(), Box<dyn error::Error>> {
         let mut conn = self.connect().await?;
-        conn.xadd(stream, "*", event.get_metadata()).await?;
+        conn.xadd(stream, "*", &event.get_metadata()).await?;
 
         Ok(())
     }
