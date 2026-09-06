@@ -1,0 +1,7 @@
+{
+  "language": "postgresql",
+  "keywordCase": "upper",
+  "linesBetweenQueries": 2,
+  "dataTypeCase": "upper",
+  "functionCase": "upper"
+}

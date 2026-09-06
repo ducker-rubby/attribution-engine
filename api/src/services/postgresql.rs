@@ -11,7 +11,10 @@ impl Postgres {
             .connect(connection_string)
             .await?;
 
-        let query = /* sql */ "SELECT version()";
+        let query = /* sql */ "
+            SELECT
+              version()
+        ";
 
         let row: (String,) = sqlx::query_as(query).fetch_one(&pool).await?;
         println!("{:?}", row);
