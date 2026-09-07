@@ -13,7 +13,7 @@ impl Postgres {
 
         let query = /* sql */ "
             SELECT
-              version()
+              VERSION()
         ";
 
         let row: (String,) = sqlx::query_as(query).fetch_one(&pool).await?;
