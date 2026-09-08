@@ -1,6 +1,6 @@
-pub mod click;
-pub mod conversion;
-pub mod event;
+mod click;
+mod conversion;
+mod event;
 
 pub use click::ClickEvent;
 pub use conversion::ConversionEvent;
