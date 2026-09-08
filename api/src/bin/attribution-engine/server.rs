@@ -1,6 +1,6 @@
 use anyhow;
 use attribution_engine::router;
-use attribution_engine::services::redis::RedisWorkerQueue;
+use attribution_engine::services::redis::{RedirectCache, RedisWorkerQueue};
 
 pub async fn run() -> anyhow::Result<()> {
     //TODO: add error handling
@@ -8,6 +8,20 @@ pub async fn run() -> anyhow::Result<()> {
         .expect("Failed to initialize Redis worker queue");
 
     worker_queue.create_consumer_group().await.unwrap();
+
+    let redirect_cache = RedirectCache::new().expect("Failed to initialze Redis redirect cache");
+
+    let redirects: [(&str, &str); 3] = [
+        ("cat", "https://www.google.com?q=cats"),
+        ("dog", "https://www.google.com?q=dogs"),
+        ("bat", "https://www.google.com?q=bats"),
+    ];
+
+    redirect_cache.add_redirects(&redirects).await.unwrap();
+
+    let redirect = redirect_cache.get_redirect("dog").await.unwrap();
+
+    println!("{:?}", redirect);
 
     let app = router::build_axum_router(worker_queue);
 
