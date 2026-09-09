@@ -8,8 +8,8 @@ pub struct RedisConnectionManager {
 }
 
 impl RedisConnectionManager {
-    pub fn new() -> Result<Self, Box<dyn error::Error>> {
-        let cfg = Config::from_url("redis://127.0.0.1:6379/");
+    pub fn build(url: &str) -> Result<Self, Box<dyn error::Error>> {
+        let cfg = Config::from_url(url);
         let pool = cfg.create_pool(Some(Runtime::Tokio1))?;
 
         Ok(Self { pool })

@@ -3,6 +3,7 @@ use std::error;
 use crate::services::redis::RedisConnectionManager;
 use redis::AsyncTypedCommands;
 
+//TODO: move redirect struct outside to own file
 #[derive(Debug)]
 pub struct Redirect {
     pub link_id: String,
@@ -25,7 +26,7 @@ pub struct RedirectCache {
 
 impl RedirectCache {
     pub fn new() -> Result<Self, Box<dyn error::Error>> {
-        let connection_manager = RedisConnectionManager::new()?;
+        let connection_manager = RedisConnectionManager::build("redis://127.0.0.1:6729")?;
         Ok(Self { connection_manager })
     }
 
