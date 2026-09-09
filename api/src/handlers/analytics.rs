@@ -3,15 +3,16 @@ use axum::{
     response::Redirect,
 };
 
-use crate::models::ClickEvent;
-use crate::services::redis::RedisWorkerQueue;
+use crate::{AppState, models::ClickEvent};
+
+//TODO: rething handler file convetion (analytics.rs has two handlers?)
 
 pub async fn foo() {
     println!("FOO")
 }
 
 pub async fn enqueue_click_event(
-    State(queue): State<RedisWorkerQueue>,
+    State(app_state): State<AppState>,
     Path(id): Path<String>,
 ) -> Redirect {
     println!("Click uploaded");
@@ -19,14 +20,16 @@ pub async fn enqueue_click_event(
 
     println!("{:?}", click);
 
-    queue.enqueue_event(click).await.unwrap();
+    app_state.worker_queue.enqueue_event(click).await.unwrap();
 
-    Redirect::to("https://www.google.com")
+    let result = app_state.redirect_cache.get_redirect(&id).await.unwrap();
+
+    Redirect::to(&result.redirect_url)
 }
 
 pub async fn enqueue_conversion_event(
-    Path(click_ref): Path<String>,
-    Path(conversion_type): Path<String>,
+    Path(_click_ref): Path<String>,
+    Path(_conversion_type): Path<String>,
 ) {
     unimplemented!()
 }

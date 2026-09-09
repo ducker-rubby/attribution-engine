@@ -1,10 +1,12 @@
-use crate::{routes, services::redis::RedisWorkerQueue};
+use crate::AppState;
+use crate::routes;
 use axum::Router;
 
-pub fn build_axum_router(queue: RedisWorkerQueue) -> Router {
+//TODO: Are route files too sparse?
+pub fn build_axum_router(app_state: AppState) -> Router {
     Router::new()
         .merge(routes::redirect::routes())
         .nest("/dash", routes::dash::routes())
         .nest("/conversion", routes::conversion::routes())
-        .with_state(queue)
+        .with_state(app_state)
 }
