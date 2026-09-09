@@ -13,5 +13,5 @@ async fn test_postgres() {
     let host_ip = postgres_instance.get_host().await.unwrap();
     let host_port = postgres_instance.get_host_port_ipv4(5432).await.unwrap();
 
-    let connection_string = format!("postgres://postgres:postgres@{host_ip}:{host_port}/postgres");
+    let _connection_string = format!("postgres://postgres:postgres@{host_ip}:{host_port}/postgres");
 }

@@ -1,6 +1,7 @@
 use crate::models::Event;
 use std::{error::Error, fmt};
 
+//TODO: re-implement `ConversionEvent`
 pub enum ConversionType {
     SignUp,
     Sale,
@@ -27,13 +28,13 @@ impl fmt::Display for ConversionType {
 }
 
 pub struct ConversionEvent<'a> {
-    conversion_type: ConversionType,
+    _conversion_type: ConversionType,
     conversion_type_str: String,
-    click_ref: &'a str,
+    _click_ref: &'a str,
 }
 
 impl<'a> ConversionEvent<'a> {
-    pub fn build(click_ref: &'a str, conversion_type: &'a str) -> Result<Self, Box<dyn Error>> {
+    pub fn build(_click_ref: &'a str, _conversion_type: &'a str) -> Result<Self, Box<dyn Error>> {
         unimplemented!()
     }
 }

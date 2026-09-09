@@ -1,5 +1,6 @@
 use sqlx::postgres::{PgPool, PgPoolOptions};
 
+//TODO: implement postgres struct
 pub struct Postgres {
     pool: PgPool,
 }
