@@ -25,8 +25,8 @@ pub struct RedirectCache {
 }
 
 impl RedirectCache {
-    pub fn new() -> Result<Self, Box<dyn error::Error>> {
-        let connection_manager = RedisConnectionManager::build("redis://127.0.0.1:6729")?;
+    pub fn new(connection_manager: RedisConnectionManager) -> Result<Self, Box<dyn error::Error>> {
+        // let connection_manager = RedisConnectionManager::build("redis://127.0.0.1:6729")?;
         Ok(Self { connection_manager })
     }
 

@@ -1,5 +1,6 @@
 use redis::streams::{StreamReadOptions, StreamReadReply};
 use redis::{AsyncCommands, from_redis_value_ref};
+
 use testcontainers_modules::{
     redis::{REDIS_PORT, Redis},
     testcontainers::runners::AsyncRunner,

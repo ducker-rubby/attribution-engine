@@ -1,2 +1,2 @@
-pub mod postgresql;
+pub mod postgres;
 pub mod redis;

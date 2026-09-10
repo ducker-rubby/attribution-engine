@@ -1,6 +1,9 @@
 use std::error::Error;
 
-use crate::{models::Event, services::redis::RedisConnectionManager};
+use crate::{
+    models::Event,
+    services::redis::{RedisConnectionManager, connection_manager},
+};
 use redis::{AsyncTypedCommands, ErrorKind};
 
 #[derive(Clone, Debug)]
@@ -36,8 +39,11 @@ impl RedisWorkerQueue {
         self
     }
 
-    pub fn connect(mut self) -> Result<Self, Box<dyn Error>> {
-        let connection_manager = RedisConnectionManager::build(&self.url)?;
+    pub fn connect(
+        mut self,
+        connection_manager: RedisConnectionManager,
+    ) -> Result<Self, Box<dyn Error>> {
+        // let connection_manager = RedisConnectionManager::build(&self.url)?;
         self.connection_manager = Some(connection_manager);
 
         Ok(self)

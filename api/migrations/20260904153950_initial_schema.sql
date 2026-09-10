@@ -8,8 +8,7 @@ CREATE TABLE link_group (
 
 
 CREATE TABLE link (
-  id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  name TEXT NOT NULL,
+  id TEXT NOT NULL PRIMARY KEY,
   redirect_url TEXT NOT NULL,
   created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
@@ -17,7 +16,7 @@ CREATE TABLE link (
 
 
 CREATE TABLE link_link_group (
-  link_id INT REFERENCES link (id) ON DELETE CASCADE,
+  link_id TEXT REFERENCES link (id) ON DELETE CASCADE,
   link_group_id INT REFERENCES link_group (id) ON DELETE CASCADE,
   PRIMARY KEY (link_id, link_group_id)
 );
@@ -44,7 +43,7 @@ CREATE TABLE user_agent (
 
 CREATE TABLE click (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  link_id INT NOT NULL REFERENCES link (id) ON DELETE CASCADE,
+  link_id TEXT NOT NULL REFERENCES link (id) ON DELETE CASCADE,
   ip INET,
   country_id CHAR(2) REFERENCES country (id),
   user_agent_id INT REFERENCES user_agent (id),

@@ -1,7 +1,7 @@
-mod redirect_cache;
-mod redis_connection_manager;
-mod redis_worker_queue;
+mod cache;
+mod connection_manager;
+mod worker_queue;
 
-pub use redirect_cache::RedirectCache;
-pub use redis_connection_manager::RedisConnectionManager;
-pub use redis_worker_queue::RedisWorkerQueue;
+pub use cache::RedirectCache;
+pub use connection_manager::RedisConnectionManager;
+pub use worker_queue::RedisWorkerQueue;

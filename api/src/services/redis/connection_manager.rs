@@ -4,7 +4,7 @@ use deadpool_redis::{Config, Runtime};
 
 #[derive(Clone, Debug)]
 pub struct RedisConnectionManager {
-    pool: deadpool_redis::Pool,
+    pub pool: deadpool_redis::Pool,
 }
 
 impl RedisConnectionManager {
