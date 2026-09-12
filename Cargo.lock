@@ -172,6 +172,7 @@ dependencies = [
  "clap",
  "deadpool-redis",
  "redis",
+ "serde",
  "sqlx",
  "testcontainers-modules",
  "tokio",
