@@ -1,9 +1,6 @@
 use std::error::Error;
 
-use crate::{
-    models::Event,
-    services::redis::{RedisConnectionManager, connection_manager},
-};
+use crate::{models::Event, services::redis::RedisConnectionManager};
 use redis::{AsyncTypedCommands, ErrorKind};
 
 #[derive(Clone, Debug)]
@@ -34,6 +31,7 @@ impl RedisWorkerQueue {
         self
     }
 
+    //TODO: remove with_url an associated struct properties
     pub fn with_url(mut self, url: impl Into<String>) -> Self {
         self.url = url.into();
         self
@@ -59,7 +57,7 @@ impl RedisWorkerQueue {
             .await?;
 
         let result = conn
-            .xgroup_create_mkstream(&self.stream_name, &self.consumer_group_name, 0)
+            .xgroup_create_mkstream(&self.stream_name, &self.consumer_group_name, "0")
             .await;
 
         match result {

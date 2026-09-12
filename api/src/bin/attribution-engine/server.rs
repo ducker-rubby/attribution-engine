@@ -24,19 +24,21 @@ pub async fn run() -> anyhow::Result<()> {
 
     // link_repo.get_by_id("test").await.unwrap();
 
-    let connection_manager = RedisConnectionManager::build("redis://127.0.0.1:6729")
+    let connection_manager = RedisConnectionManager::build("redis://127.0.0.1:6379")
         .expect("Could not make redis connection manager");
 
     let worker_queue = RedisWorkerQueue::default()
         .with_group("clickstream", "clickgroup")
-        .with_url("redis://127.0.0.1:6379")
         .connect(connection_manager.clone())
         .expect("Could not create RedisWorkerQueue");
 
     worker_queue
         .create_consumer_group()
         .await
-        .expect("Could not create consumer group");
+        .unwrap_or_else(|err| {
+            eprintln!("Could not create consumer group, {err}");
+            panic!()
+        });
 
     let redirect_cache = RedirectCache::new(connection_manager.clone())
         .expect("Failed to initialze Redis redirect cache");

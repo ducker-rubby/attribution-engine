@@ -39,10 +39,12 @@ async fn test_redis_worker_queue() {
     let consumer_group_name = format!("testgroup_{}", run_id);
     let test_link_id = "testlink";
 
+    let connection_manager =
+        RedisConnectionManager::build(&url).expect("Could not build connection manager");
+
     let queue = RedisWorkerQueue::default()
         .with_group(&stream_name, &consumer_group_name)
-        .with_url(&url)
-        .connect()
+        .connect(connection_manager)
         .expect("Could not create RedisWorkerQueue");
 
     queue
