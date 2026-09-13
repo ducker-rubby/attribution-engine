@@ -1,4 +1,3 @@
-//TODO: move redirect struct outside to own file
 #[derive(Debug)]
 pub struct Link {
     pub id: String,

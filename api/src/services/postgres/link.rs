@@ -1,6 +1,7 @@
 use sqlx::postgres::PgPool;
 
 use crate::models::Link;
+use crate::models::db::CreateLink;
 
 pub struct LinkRepository {
     pool: PgPool,
@@ -31,5 +32,24 @@ impl LinkRepository {
         println!("{:#?}", link);
 
         Ok(link)
+    }
+
+    pub async fn insert_link(&self, link: CreateLink) -> Result<(), sqlx::Error> {
+        sqlx::query!(
+            /* sql */
+            "
+            INSERT INTO
+              link (id, redirect_url, link_group_id)
+            VALUES
+              ($1, $2, $3)
+            ",
+            link.name,
+            link.redirect_url,
+            link.group_id
+        )
+        .execute(&self.pool)
+        .await?;
+
+        Ok(())
     }
 }

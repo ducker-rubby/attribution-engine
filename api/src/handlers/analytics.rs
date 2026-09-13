@@ -3,7 +3,7 @@ use axum::{
     response::Redirect,
 };
 
-use crate::{AppState, models::ClickEvent};
+use crate::{AppState, models::cache::ClickEvent};
 
 //TODO: rething handler file convetion (analytics.rs has two handlers?)
 

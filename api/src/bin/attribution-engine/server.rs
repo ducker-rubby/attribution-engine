@@ -1,5 +1,6 @@
 use anyhow;
 use attribution_engine::AppState;
+use attribution_engine::models::db::CreateLink;
 use attribution_engine::router;
 use attribution_engine::services::postgres::{PgPoolManager, link::LinkRepository};
 use attribution_engine::services::redis::{
@@ -8,9 +9,6 @@ use attribution_engine::services::redis::{
 
 pub async fn run() -> anyhow::Result<()> {
     //TODO: add error handling
-
-    // let worker_queue = RedisWorkerQueue::build("clickstream", "clickgroup")
-    //     .expect("Failed to initialize Redis worker queue");
 
     //TODO: change connection string to env variable
     let connection_string = format!(
@@ -23,6 +21,12 @@ pub async fn run() -> anyhow::Result<()> {
     let link_repo = LinkRepository::new(postgres_pool_manager.pool);
 
     // link_repo.get_by_id("test").await.unwrap();
+    //
+    let link = CreateLink::build("adfae", "https://www.google.com");
+    link_repo
+        .insert_link(link)
+        .await
+        .expect("Error inserting link");
 
     let connection_manager = RedisConnectionManager::build("redis://127.0.0.1:6379")
         .expect("Could not make redis connection manager");

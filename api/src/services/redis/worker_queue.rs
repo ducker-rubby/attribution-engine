@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use crate::{models::Event, services::redis::RedisConnectionManager};
+use crate::{models::cache::Event, services::redis::RedisConnectionManager};
 use redis::{AsyncTypedCommands, ErrorKind};
 
 #[derive(Clone, Debug)]

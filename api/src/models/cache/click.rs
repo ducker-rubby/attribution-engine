@@ -1,6 +1,6 @@
 use uuid::Uuid;
 
-use crate::models::Event;
+use crate::models::cache::Event;
 
 #[derive(Debug)]
 pub struct ClickEvent<'a> {

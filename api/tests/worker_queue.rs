@@ -7,7 +7,7 @@ use testcontainers_modules::{
 };
 
 use attribution_engine::{
-    models::ClickEvent,
+    models::cache::ClickEvent,
     services::redis::{RedisConnectionManager, RedisWorkerQueue},
 };
 

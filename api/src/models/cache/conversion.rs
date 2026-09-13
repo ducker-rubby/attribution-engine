@@ -1,4 +1,4 @@
-use crate::models::Event;
+use crate::models::cache::Event;
 use std::{error::Error, fmt};
 
 //TODO: re-implement `ConversionEvent`
