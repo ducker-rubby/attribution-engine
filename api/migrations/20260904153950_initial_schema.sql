@@ -64,3 +64,13 @@ CREATE INDEX idx_click_user_agent_id ON click (user_agent_id);
 
 
 CREATE INDEX idx_click_referrer_id ON click (referrer_id);
+
+
+CREATE TABLE account (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  email TEXT NOT NULL,
+  hash TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT uk_email UNIQUE (email)
+)
