@@ -1,7 +1,7 @@
 use sqlx::postgres::PgPool;
 
 use crate::models::Link;
-use crate::models::db::CreateLink;
+use crate::models::db::link::CreateLink;
 
 pub struct LinkRepository {
     pool: PgPool,

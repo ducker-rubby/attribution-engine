@@ -1,6 +1,6 @@
 use anyhow;
 use attribution_engine::AppState;
-use attribution_engine::models::db::CreateLink;
+use attribution_engine::models::db::link::CreateLink;
 use attribution_engine::router;
 use attribution_engine::services::postgres::{PgPoolManager, link::LinkRepository};
 use attribution_engine::services::redis::{

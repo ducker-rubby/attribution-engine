@@ -1,6 +1,8 @@
 use sqlx::postgres::{PgPool, PgPoolOptions};
 
+pub mod click;
 pub mod link;
+pub mod link_group;
 
 pub struct PgPoolManager {
     pub pool: PgPool,

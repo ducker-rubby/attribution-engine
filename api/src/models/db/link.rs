@@ -21,3 +21,6 @@ impl CreateLink {
         self
     }
 }
+
+//TODO: implement update struct
+pub struct UpdateLink {}
