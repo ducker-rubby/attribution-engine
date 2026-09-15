@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev:web": "npm run dev --workspace=web",
-    "sqlx:migrate": "sqlx migrate run --source ./api/migrations/",
-    "sqlx:reset": "sqlx database reset --source ./api/migrations/",
+    "db:migrate": "sqlx migrate run --source ./api/migrations/",
+    "db:reset": "sqlx database reset --source ./api/migrations/",
+    "db:seed": "cargo run --bin seed --features dev-tools",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "private": true,

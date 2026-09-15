@@ -2,6 +2,14 @@
 name = "attribution-engine"
 version = "0.1.0"
 edition = "2024"
+default-run = "attribution-engine"
+
+[[bin]]
+name = "attribution-engine"
+
+[[bin]]
+name = "seed"
+required-features = ["dev-tools"]
 
 [dependencies]
 axum = "0.8"
@@ -14,3 +22,6 @@ sqlx = { version = "0.9", features = [ "runtime-tokio", "postgres" ] }
 clap = { version = "4.6.6", features = ["derive"] }
 anyhow = "1.0.104"
 serde = "1.0.229"
+
+[features]
+dev-tools = []
